@@ -8,12 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--
   Created by: Claude Fontaine (claude@wa99.com)
-  Version: 1.0.0
+  Version: 1.1.0
   License: MIT License (Open Source)
 
 MIT License
 
-Copyright (c) [2026] [Claude B Fontaine <claudethecoach@gmail.com]
+Copyright (c) [2026] [Claude B Fontaine <claudethecoach@gmail.com>]
 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -38,7 +38,7 @@ SOFTWARE.
 -->
   
 
-  <title>Chess Club Weekly Manager V1.0.0</title>
+  <title>Chess Club Weekly Manager V1.1.0</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -125,7 +125,7 @@ SOFTWARE.
               <span>St. Catharines Chess Club</span>
               <span class="text-xs bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-700">KOTH</span>
             </h1>
-            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-none">Weekly Pairing & Leaderboard Engine  V1.0.0 CBF</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5 leading-none">Weekly Pairing & Leaderboard Engine V1.1.0 CBF</p>
           </div>
         </div>
 
@@ -175,7 +175,7 @@ SOFTWARE.
       <!-- Player Add Header Cards -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         
-        <!-- Manual / Chess.com Add Form Card -->
+        <!-- Manual / API Add Form Card -->
         <div class="lg:col-span-1 bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 p-5">
           <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
             <i class="fa-solid fa-user-plus text-emerald-500"></i> Register New Player
@@ -192,7 +192,7 @@ SOFTWARE.
                 <label class="block text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Rating Mode</label>
                 <div class="flex text-xs rounded-lg bg-slate-100 dark:bg-slate-700 p-0.5">
                   <button type="button" id="btn-mode-manual" onclick="setRatingFetchMode('manual')" class="px-2.5 py-1 rounded-md font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-600 shadow-xs">Manual</button>
-                  <button type="button" id="btn-mode-chesscom" onclick="setRatingFetchMode('chesscom')" class="px-2.5 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400">Chess.com API</button>
+                  <button type="button" id="btn-mode-api" onclick="setRatingFetchMode('api')" class="px-2.5 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400">Fetch Online API</button>
                 </div>
               </div>
 
@@ -202,16 +202,22 @@ SOFTWARE.
                 <p class="text-xs text-slate-400 mt-1">Starting default rating is 1200 Elo.</p>
               </div>
 
-              <!-- Chess.com Username Field -->
-              <div id="field-chesscom" class="hidden space-y-2">
-                <div class="relative">
-                  <input type="text" id="input-chesscom-username" placeholder="Chess.com Username" class="w-full px-3.5 py-2.5 pl-9 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
-                  <i class="fa-solid fa-globe absolute left-3 top-3 text-slate-400"></i>
+              <!-- Online Platform Username Field -->
+              <div id="field-api" class="hidden space-y-2">
+                <div class="flex gap-2">
+                  <select id="select-online-platform" class="text-xs px-2.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200 focus:ring-2 focus:ring-emerald-500">
+                    <option value="chesscom">Chess.com</option>
+                    <option value="lichess">Lichess.org</option>
+                  </select>
+                  
+                  <div class="relative flex-1">
+                    <input type="text" id="input-online-username" placeholder="Username" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-emerald-500 focus:outline-none">
+                  </div>
                 </div>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 pt-1">
                   <label class="text-xs text-slate-500 dark:text-slate-400">Preferred Rating:</label>
-                  <select id="select-chesscom-timecontrol" class="text-xs px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
+                  <select id="select-online-timecontrol" class="text-xs px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
                     <option value="rapid">Rapid</option>
                     <option value="blitz">Blitz</option>
                     <option value="bullet">Bullet</option>
@@ -284,7 +290,7 @@ SOFTWARE.
                 <th class="py-3.5 px-4 text-center w-16">Active</th>
                 <th class="py-3.5 px-4">Player Name</th>
                 <th class="py-3.5 px-4 text-center">Current Elo</th>
-                <th class="py-3.5 px-4 text-center">Chess.com handle</th>
+                <th class="py-3.5 px-4 text-center">Online handle</th>
                 <th class="py-3.5 px-4 text-center">Club Record (W/D/L)</th>
                 <th class="py-3.5 px-4 text-right">Actions</th>
               </tr>
@@ -428,8 +434,14 @@ SOFTWARE.
         </div>
 
         <div>
-          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Chess.com Username</label>
-          <input type="text" id="edit-player-chesscom" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Online Platform</label>
+          <select id="edit-player-platform" class="w-full px-3.5 py-2 mb-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
+            <option value="chesscom">Chess.com</option>
+            <option value="lichess">Lichess.org</option>
+          </select>
+
+          <label class="block text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Online Username</label>
+          <input type="text" id="edit-player-username" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none">
         </div>
       </div>
 
@@ -508,13 +520,13 @@ SOFTWARE.
     const STORAGE_KEY = 'chess_club_manager_v2';
 
     let clubState = {
-      players: [],        // Array of Player Objects {id, name, elo, chesscom, wins, draws, losses, streak, present, previousOpponents}
+      players: [],        // Array of Player Objects {id, name, elo, platform, chesscom, wins, draws, losses, streak, present, previousOpponents}
       currentRound: 1,    // Round counter
       pairings: [],       // Current round matches [{board, whiteId, blackId, result}]
       roundCompleted: false
     };
 
-    let activeFetchMode = 'manual'; // 'manual' | 'chesscom'
+    let activeFetchMode = 'manual'; // 'manual' | 'api'
 
     // On Application Initialization
     window.addEventListener('DOMContentLoaded', () => {
@@ -584,25 +596,25 @@ SOFTWARE.
     }
 
     /* ==========================================================================
-       3. PLAYER MANAGEMENT & CHESS.COM API
+       3. PLAYER MANAGEMENT & ONLINE CHESS API INTEGRATIONS (Chess.com & Lichess)
        ========================================================================== */
     function setRatingFetchMode(mode) {
       activeFetchMode = mode;
       const manualBtn = document.getElementById('btn-mode-manual');
-      const chesscomBtn = document.getElementById('btn-mode-chesscom');
+      const apiBtn = document.getElementById('btn-mode-api');
       const manualField = document.getElementById('field-manual-elo');
-      const chesscomField = document.getElementById('field-chesscom');
+      const apiField = document.getElementById('field-api');
 
       if (mode === 'manual') {
         manualBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-600 shadow-xs";
-        chesscomBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400";
+        apiBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400";
         manualField.classList.remove('hidden');
-        chesscomField.classList.add('hidden');
+        apiField.classList.add('hidden');
       } else {
-        chesscomBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-600 shadow-xs";
+        apiBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-600 shadow-xs";
         manualBtn.className = "px-2.5 py-1 rounded-md font-medium text-slate-500 dark:text-slate-400";
         manualField.classList.add('hidden');
-        chesscomField.classList.remove('hidden');
+        apiField.classList.remove('hidden');
       }
     }
 
@@ -613,7 +625,8 @@ SOFTWARE.
       if (!name) return;
 
       let elo = 1200;
-      let chesscomHandle = "";
+      let onlineHandle = "";
+      let platform = "chesscom";
 
       const submitBtn = document.getElementById('btn-submit-player');
       const originalBtnHTML = submitBtn.innerHTML;
@@ -621,18 +634,26 @@ SOFTWARE.
       if (activeFetchMode === 'manual') {
         elo = parseInt(document.getElementById('input-player-elo').value) || 1200;
       } else {
-        chesscomHandle = document.getElementById('input-chesscom-username').value.trim();
-        if (chesscomHandle) {
+        platform = document.getElementById('select-online-platform').value;
+        onlineHandle = document.getElementById('input-online-username').value.trim();
+        if (onlineHandle) {
           submitBtn.disabled = true;
           submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Fetching rating...`;
           
-          const tc = document.getElementById('select-chesscom-timecontrol').value;
-          const fetchedElo = await fetchChesscomRating(chesscomHandle, tc);
+          const tc = document.getElementById('select-online-timecontrol').value;
+          let fetchedElo = null;
+
+          if (platform === 'lichess') {
+            fetchedElo = await fetchLichessRating(onlineHandle, tc);
+          } else {
+            fetchedElo = await fetchChesscomRating(onlineHandle, tc);
+          }
+
           if (fetchedElo) {
             elo = fetchedElo;
-            showToast(`Fetched ${chesscomHandle}'s ${tc} Elo: ${elo}`, 'success');
+            showToast(`Fetched ${onlineHandle}'s ${tc} Elo from ${platform === 'lichess' ? 'Lichess' : 'Chess.com'}: ${elo}`, 'success');
           } else {
-            showToast(`Could not find Chess.com player/rating. Defaulting to 1200.`, 'warning');
+            showToast(`Could not fetch rating for ${onlineHandle}. Defaulting to 1200.`, 'warning');
           }
           
           submitBtn.disabled = false;
@@ -644,7 +665,8 @@ SOFTWARE.
         id: 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
         name: name,
         elo: elo,
-        chesscom: chesscomHandle,
+        platform: platform,
+        chesscom: onlineHandle, // retain field name for schema compatibility
         wins: 0,
         draws: 0,
         losses: 0,
@@ -658,7 +680,7 @@ SOFTWARE.
 
       // Reset form
       nameInput.value = '';
-      document.getElementById('input-chesscom-username').value = '';
+      document.getElementById('input-online-username').value = '';
       
       renderRosterTable();
       showToast(`Added ${name} (${elo} Elo) to Roster`, 'success');
@@ -668,9 +690,8 @@ SOFTWARE.
       try {
         const response = await fetch(`https://api.chess.com/pub/player/${username.toLowerCase()}/stats`);
         if (!response.ok) return null;
-        const data = await response.parse ? await response.parse() : await response.json();
+        const data = await response.json();
 
-        // Priority order: Preferred -> Rapid -> Blitz -> Bullet -> 1200
         if (data[`chess_${preferredTimeControl}`] && data[`chess_${preferredTimeControl}`].last) {
           return data[`chess_${preferredTimeControl}`].last.rating;
         } else if (data.chess_rapid && data.chess_rapid.last) {
@@ -683,6 +704,30 @@ SOFTWARE.
         return null;
       } catch (err) {
         console.warn("Error fetching Chess.com API:", err);
+        return null;
+      }
+    }
+
+    async function fetchLichessRating(username, preferredTimeControl = 'rapid') {
+      try {
+        const response = await fetch(`https://lichess.org/api/user/${username.toLowerCase()}`);
+        if (!response.ok) return null;
+        const data = await response.json();
+
+        if (data.perfs) {
+          if (data.perfs[preferredTimeControl] && data.perfs[preferredTimeControl].rating) {
+            return data.perfs[preferredTimeControl].rating;
+          } else if (data.perfs.rapid && data.perfs.rapid.rating) {
+            return data.perfs.rapid.rating;
+          } else if (data.perfs.blitz && data.perfs.blitz.rating) {
+            return data.perfs.blitz.rating;
+          } else if (data.perfs.bullet && data.perfs.bullet.rating) {
+            return data.perfs.bullet.rating;
+          }
+        }
+        return null;
+      } catch (err) {
+        console.warn("Error fetching Lichess API:", err);
         return null;
       }
     }
@@ -721,7 +766,8 @@ SOFTWARE.
       document.getElementById('edit-player-id').value = player.id;
       document.getElementById('edit-player-name').value = player.name;
       document.getElementById('edit-player-elo').value = player.elo;
-      document.getElementById('edit-player-chesscom').value = player.chesscom || '';
+      document.getElementById('edit-player-platform').value = player.platform || 'chesscom';
+      document.getElementById('edit-player-username').value = player.chesscom || '';
 
       openModal('modal-edit-player');
     }
@@ -733,7 +779,8 @@ SOFTWARE.
 
       player.name = document.getElementById('edit-player-name').value.trim() || player.name;
       player.elo = parseInt(document.getElementById('edit-player-elo').value) || player.elo;
-      player.chesscom = document.getElementById('edit-player-chesscom').value.trim();
+      player.platform = document.getElementById('edit-player-platform').value;
+      player.chesscom = document.getElementById('edit-player-username').value.trim();
 
       saveStateToStorage();
       closeModal('modal-edit-player');
@@ -780,11 +827,17 @@ SOFTWARE.
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 dark:hover:bg-slate-700/40 transition-colors";
 
-        const chesscomBadge = player.chesscom 
-          ? `<a href="https://www.chess.com/member/${player.chesscom}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:underline">
-               <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i> ${player.chesscom}
-             </a>`
-          : `<span class="text-xs text-slate-400 dark:text-slate-600">-</span>`;
+        let platformBadge = `<span class="text-xs text-slate-400 dark:text-slate-600">-</span>`;
+        if (player.chesscom) {
+          const isLichess = player.platform === 'lichess';
+          const url = isLichess ? `https://lichess.org/@/${player.chesscom}` : `https://www.chess.com/member/${player.chesscom}`;
+          const label = isLichess ? `Lichess: ${player.chesscom}` : `Chess.com: ${player.chesscom}`;
+          const icon = isLichess ? 'fa-square-chess' : 'fa-arrow-up-right-from-square';
+
+          platformBadge = `<a href="${url}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-xs text-amber-600 dark:text-amber-400 hover:underline">
+                             <i class="fa-solid ${icon} text-[10px]"></i> ${label}
+                           </a>`;
+        }
 
         tr.innerHTML = `
           <td class="py-3 px-4 text-center">
@@ -799,7 +852,7 @@ SOFTWARE.
             </span>
           </td>
           <td class="py-3 px-4 text-center">
-            ${chesscomBadge}
+            ${platformBadge}
           </td>
           <td class="py-3 px-4 text-center text-xs font-medium text-slate-600 dark:text-slate-300">
             <span class="text-emerald-600 font-bold">${player.wins || 0}W</span> / 
